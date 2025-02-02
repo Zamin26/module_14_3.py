@@ -5,7 +5,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import asyncio
-
 from python_package.python_library import button
 
 api = ""
@@ -19,12 +18,10 @@ class UserState(StatesGroup):                                             # на
     weight = State()
 
 
-
 @dp.callback_query_handler(text = 'calories')                            # handler исправлен'
 async def set_age(call):
     await call.message.answer('Введите свой возраст:')                   # ответ на сообщение
     await UserState.age.set()                                            # ввода возраста в атрибут
-
 
 
 kb = ReplyKeyboardMarkup(
@@ -38,7 +35,6 @@ kb = ReplyKeyboardMarkup(
 
 button3 = KeyboardButton(text = "Купить"),                # Добавление кнопки купить в клавиатуру
 kb.add(button3)
-
 
 
 menu = InlineKeyboardMarkup()
@@ -60,7 +56,6 @@ menu.add(button7)
 
 
 
-
 @dp.message_handler(commands = ['start'])                       # хендлер на вызов команды
 async def start(message):
     await message.answer('Привет, я бот помогающий твоему здоровью!', reply_markup = kb)
@@ -73,8 +68,6 @@ async def get_buying_list(message):
         with open(f'files/{i} таблетки.jpg','rb') as img:
             await message.answer(f"Название: Product {i} | Описание: описание {i} | Цена: {i*100}")
             await message.answer_photo(img, reply_markup=kb)            # ответ картинкой
-
-
         await message.answer('Выберите продукт для покупки:', reply_markup=menu_kb)
 
 
@@ -90,14 +83,11 @@ async def main_menu(message):
     await message.answer("Выбери опцию", reply_markup=menu)
 
 
-
 @dp.callback_query_handler(text="calories")
 async def set_age(call):
     await call.message.answer('Введите свой возраст:')
     await UserState.age.set()
-
-
-
+    
 
 @dp.callback_query_handler(text = 'formulas')    #call back дата, на какую кнопку будет отрабатывать handler
 async def get_formulas(call):
@@ -133,13 +123,6 @@ async def send_calories(message, state):
     await message.answer(f' Норма калорий составляет для мужчины: {norma_calories_man:.2f}, '
                          f'для женщины: {norma_calories_woman:.2f}.')                   # Результат вычисления
     await state.finish()                                                                # закрытие машины
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
